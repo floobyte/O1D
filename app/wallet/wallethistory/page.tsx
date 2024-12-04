@@ -45,7 +45,6 @@ export default function WalletHistoryPage() {
 
     fetchWalletHistory();
   }, [userId]); // Depend on userId to re-fetch when it changes
-
   if (loading) {
     return (
       <div className="p-4 text-center">
