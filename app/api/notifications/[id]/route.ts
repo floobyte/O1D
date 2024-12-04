@@ -3,9 +3,9 @@ import dbConnect from "@/lib/connectDb";
 import Notification from "@/models/Notification";
 
 // GET: Fetch notifications for a specific user
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, constext: { params: { id: string } }) {
     await dbConnect();
-    const userId = params.id;
+    const userId = constext.params.id;
 
     try {
         const notification = await Notification.find({ userId: userId }).sort({createdAt: -1});
