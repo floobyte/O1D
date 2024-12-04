@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-type ApproveFundFormProps = {};
 
-const ApproveFundForm: React.FC<ApproveFundFormProps> = () => {
+
+const ApproveFundForm = () => {
   const [transactionId, setTransactionId] = useState('');
   const [action, setAction] = useState<'approve' | 'reject' | ''>('');
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
@@ -45,7 +45,8 @@ const ApproveFundForm: React.FC<ApproveFundFormProps> = () => {
       }
 
       router.push('/wallet');
-    } catch (err) {
+    } catch (error) { // `error` is now used
+      console.log('Failed to connect to the server.',error);
       setError('Failed to connect to the server.');
     } finally {
       setIsLoading(false);

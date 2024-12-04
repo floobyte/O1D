@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import ProductList from "../components/ProductList";
 import { useAuthContext } from "@/app/context/AuthContext";
 import PopUpModal from "../components/PopUpProduct/PopUpModal";
@@ -22,7 +22,7 @@ export default function RentalsPage() {
     const [rentals, setRentals] = useState<Rental[]>([]);
     const [showForm, setShowForm] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Rental | null>(null);
-    const router = useRouter();
+    // const router = useRouter();
     const { userRole, userId } = useAuthContext();
     const userIdString = `${userId}`;
     const [showPopup, setShowPopup] = useState(false);
@@ -99,13 +99,13 @@ export default function RentalsPage() {
                         onClick={() => setSelectedProduct(rental)}
                     >
                         {/* Image Section */}
-                        <div className="relative">
+                        {/* <div className="relative">
                             <img
                                 src={rental.productImage}
                                 alt={rental.productName}
                                 className="w-full h-48 object-cover rounded-md"
                             />
-                        </div>
+                        </div> */}
 
                         {/* Product Information */}
                         <div className="text-center">
@@ -158,11 +158,11 @@ export default function RentalsPage() {
                             ✕
                         </button>
                         {/* Product Details */}
-                        <img
+                        {/* <img
                             src={selectedProduct.productImage}
                             alt={selectedProduct.productName}
                             className="w-full h-48 object-cover rounded-md mb-4"
-                        />
+                        /> */}
                         <h2 className="text-lg font-semibold">{selectedProduct.productName}</h2>
                         <p className="text-gray-100">Offer Validity: {selectedProduct.offerTiming || "N/A"}</p>
                         <p className="text-gray-100">Rental Days: {selectedProduct.rentDays}</p>

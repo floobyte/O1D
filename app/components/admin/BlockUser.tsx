@@ -28,8 +28,13 @@ const BlockUser = () => {
       // }
 
       setResponseMessage(result.message);
-    } catch (error: any) {
-      setResponseMessage(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setResponseMessage(error.message);
+      } else {
+        // Handle the case where error is not an instance of Error
+        setResponseMessage('An unknown error occurred');
+      }
     }
   };
 

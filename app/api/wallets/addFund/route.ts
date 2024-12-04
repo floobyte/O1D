@@ -55,17 +55,17 @@ export async function POST(req: Request) {
     await walletNotification.save();
 
     // Notify admin of the new fund request
-    const adminNotification = new Notification({
-      userId: user, // Use a predefined admin identifier
-      userRole: user.role,
-      transactionId: newWalletHistory._id,
-      message: `User ${username} has requested to add funds of amount ${amount}.`,
-      readStatus: false,
-    });
-    await adminNotification.save();
+    // const adminNotification = new Notification({
+    //   userId: user, // Use a predefined admin identifier
+    //   userRole: user.role,
+    //   transactionId: newWalletHistory._id,
+    //   message: `User ${username} has requested to add funds of amount ${amount}.`,
+    //   readStatus: false,
+    // });
+    // await adminNotification.save();
 
     return NextResponse.json(
-      { message: 'Fund request is pending admin approval'},
+      { message: `Fund request is pending admin approval`},
       { status: 200 }
     );
   } catch (error) {

@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/app/context/AuthContext';
+import Image from 'next/image'; // Import Image from next/image
 
-type FundFormProps = {};
+type FundFormProps = object; // or 'unknown'
 
 const FundForm: React.FC<FundFormProps> = () => {
   const [amount, setAmount] = useState<number | ''>('');
@@ -51,7 +52,7 @@ const FundForm: React.FC<FundFormProps> = () => {
       }
 
       router.push('/wallet');
-    } catch (err) {
+    } catch {
       setError('Failed to connect to the server.');
     } finally {
       setIsLoading(false);
@@ -106,10 +107,12 @@ const FundForm: React.FC<FundFormProps> = () => {
             >
               ✖
             </button>
-            <img
+            <Image
               src="/images/qrcode.png" // Replace with your actual image path
               alt="Success"
               className="w-48 h-48 object-cover"
+              width={192}  // specify the width
+              height={192} // specify the height
             />
             <p className="text-center text-lg font-medium mt-4 text-gray-700">
               UPI ID: 8795869889@ybl

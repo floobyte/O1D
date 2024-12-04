@@ -40,8 +40,9 @@ const ViewTicket = () => {
 
                 const data = await response.json();
                 setTickets(data.tickets);
-            } catch (err: any) {
-                setError(err.message || "An error occurred while fetching tickets.");
+            } catch (err) {
+                console.log("An error occurred while fetching tickets.", err);
+                setError("An error occurred while fetching tickets.");
             }
         };
 

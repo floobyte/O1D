@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/connectDb';
 import Support from '@/models/Support';
 
+
+interface CustomRequest extends NextRequest {
+  user?: {
+    role: string;
+    id: string;
+  };
+}
+
+
 export async function POST(req: NextRequest) {
   try {
     const { ticketId, message } = await req.json();
@@ -13,8 +22,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const userRole = (req as any).user?.role || 'user';
-    const userId = (req as any).user?.id || 'guest';
+    const userRole = (req as CustomRequest).user?.role || 'user';
+    const userId = (req as CustomRequest).user?.id || 'guest';
 
     await dbConnect();
 

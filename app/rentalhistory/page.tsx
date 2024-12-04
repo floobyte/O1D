@@ -36,8 +36,9 @@ const RentalHistory = () => {
         );
 
         setRentalProducts(sortedProducts);
-      } catch (err: any) {
-        setError(err.message || "An error occurred while fetching rental history.");
+      } catch (err) {
+        console.log("An error occurred while fetching rental history.",err);
+        setError("An error occurred while fetching rental history.");
       }
     };
 
@@ -65,13 +66,13 @@ const RentalHistory = () => {
               className="border rounded-lg shadow p-4 flex flex-col md:flex-row gap-4 items-center md:items-start bg-slate-950 text-center sm:text-left"
             >
               {/* Product Image */}
-              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+              {/* <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 rounded overflow-hidden flex-shrink-0">
                 <img
                   // src={`/images/${product._id}.jpg`} // Replace with actual image URL
                   alt={product.productName}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </div> */}
 
               {/* Product Details */}
               <div className="flex-grow text-white">

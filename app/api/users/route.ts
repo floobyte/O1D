@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 // import { authMiddleware } from '@/middleware/authMiddleware';
 
 // GET
-export async function GET(req: Request) {
+export async function GET() {
   // const middlewareResponse = await authMiddleware(req, ['admin']);
 
   // if(middlewareResponse){

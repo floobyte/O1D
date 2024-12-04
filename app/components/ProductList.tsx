@@ -9,8 +9,18 @@ interface RentalFormProps {
   onProductAdded: () => void;
 }
 
+interface FormData {
+  productName: string;
+  rentAmount: string;
+  rentDays: string;
+  dailyEarning: string;
+  offerTiming: string;
+  totalEarning: string;
+  buyAmount: string;
+}
+
 export default function RentalForm({ onClose, onProductAdded }: RentalFormProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     productName: "",
     rentAmount: '',
     rentDays: '',
@@ -49,11 +59,12 @@ export default function RentalForm({ onClose, onProductAdded }: RentalFormProps)
       onProductAdded();
       setIsModalVisible(true);
     } catch (err) {
+      console.log("Error creating rental. Please try again.",err);
       setError("Error creating rental. Please try again.");
     }
   };
 
-  const handleFormToggle = () => setIsModalVisible(!isModalVisible);
+  // const handleFormToggle = () => setIsModalVisible(!isModalVisible);
 
   const handleModalClose = () => {
     setIsModalVisible(false);
@@ -88,7 +99,7 @@ export default function RentalForm({ onClose, onProductAdded }: RentalFormProps)
               key={field}
               type="text"
               name={field}
-              value={(formData as any)[field]}
+              value={formData [field as keyof FormData]}
               placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
               onChange={handleChange}
               className="bg-slate-100 dark:bg-slate-950"
@@ -100,7 +111,7 @@ export default function RentalForm({ onClose, onProductAdded }: RentalFormProps)
               key={field}
               type="number"
               name={field}
-              value={(formData as any)[field]}
+              value={formData[field as keyof FormData]}
               placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
               onChange={handleChange}
               className="bg-slate-100 dark:bg-slate-950 appearance-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden"

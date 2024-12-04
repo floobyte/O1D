@@ -43,6 +43,7 @@ export async function POST(req: Request) {
 
     // Generate a success response, including wallet ID and token
     const token = generateToken(user.role);
+    // console.log({token});
     const res = NextResponse.json(
       {
         message: 'Login successful',

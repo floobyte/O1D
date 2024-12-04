@@ -13,7 +13,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [responseMessage, setResponseMessage] = useState<string>("");
-  const [removedUserId, setRemovedUserId] = useState<string>("");
+  // const [removedUserId, setRemovedUserId] = useState<string>("");
 
   // Effect to filter and sort users based on roles
   useEffect(() => {
@@ -56,8 +56,9 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
           user._id === id ? { ...user, blocked: block } : user
         )
       );
-    } catch (error: any) {
-      setResponseMessage(error.message);
+    } catch (error) {
+      console.log("User not found",error);
+      setResponseMessage("User not found");
     }
   };
 
@@ -78,7 +79,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
       }
 
       setResponseMessage(result.message);
-      setRemovedUserId(id);
+      // setRemovedUserId(id);
 
       // Remove the user from the local state
       setFilteredUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));

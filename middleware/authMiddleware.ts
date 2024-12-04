@@ -15,7 +15,7 @@ export const authMiddleware = async (req: Request, roles: string[]) => {
   const cookies = cookie.parse(cookieHeader);
   // console.log({cookies});
   const token = cookies.token;
-  // console.log({token});
+  console.log({token});
   if (!token) {
     console.log("Token is missing in cookies!");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

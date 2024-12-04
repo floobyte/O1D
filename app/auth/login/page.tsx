@@ -7,7 +7,7 @@ import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { User } from "@/types";
+// import { User } from "@/types";
 import { fetchUsers } from "@/app/services/api";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
@@ -16,7 +16,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
+  // const [users, setUsers] = useState<User[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { login } = useAuthContext(); // Access login function from AuthContext
   const router = useRouter();
@@ -28,7 +28,8 @@ const LoginPage = () => {
 
     try {
       const data = await fetchUsers();
-      setUsers(data);
+      console.log(data);
+      // setUsers(data);
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +55,7 @@ const LoginPage = () => {
         setError("Blocked By Admin or Invalid email or password");
       }
     } catch (err) {
+      console.log("An error occurred during login", err);
       setError("An error occurred during login");
     } finally {
       setLoading(false);
@@ -101,7 +103,7 @@ const LoginPage = () => {
         </form>
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
             <Link href="/auth/signUp" className="text-blue-600 hover:text-blue-800">
              Sign Up
             </Link>

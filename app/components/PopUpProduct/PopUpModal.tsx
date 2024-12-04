@@ -16,7 +16,7 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ message, onClose }) => {
         >
           ✕
         </button>
-        <p className="text-xl">{message}</p>
+        <p className="text-xl text-green-400">{message}</p>
         <div className="mt-4">
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700"

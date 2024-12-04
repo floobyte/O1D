@@ -12,10 +12,16 @@ export const setTokenCookie = (res: NextResponse, token: string, role: string) =
   };
 
   // Set the cookie in the response header
-  res.headers.set(
-    'Set-Cookie',
-    cookie.serialize('token', token, cookieOptions)
-  );
+  // res.headers.set(
+  //   'Set-Cookie',
+  //   cookie.serialize('token', token, cookieOptions)
+  // );
+
+  res.cookies.set('token', token,{
+    httpOnly:false,
+    sameSite:'strict',
+    path: '/'
+  })
 
   res.cookies.set('role', role, { 
     httpOnly: false, 

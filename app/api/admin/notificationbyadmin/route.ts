@@ -4,6 +4,12 @@ import { NextResponse } from 'next/server';
 import User from '@/models/Users';
 import { authMiddleware } from "@/middleware/authMiddleware";
 
+
+type userNotification = {
+  userRole: string;
+  [key: string]: unknown; // Add other fields as required
+};
+
 // GET: Fetch notifications for a specific user
 // Add Fund Request Notification Get ByAdmin
 export async function GET(req: Request) {
@@ -16,10 +22,10 @@ export async function GET(req: Request) {
 
   try {
 
-    const notification = await Notification.find({});
+    const notification:userNotification[] = await Notification.find({});
 
     // Define userNotifications array to store only users notifications
-    let userNotifications: any[] = [];
+    const userNotifications: userNotification[] = [];
 
     notification.forEach(notifications => {
 

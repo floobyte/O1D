@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState,useEffect} from "react";
 import Link from "next/link";
 import { useAuthContext } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -7,21 +7,21 @@ import { FaHome, FaSignInAlt, FaUserCircle, FaWallet, FaHeadset, FaProjectDiagra
 import Notifications from "./Notification";
 
 
-interface UserDetails {
-  name: string;
-  email: string;
-  [key: string]: any;
-}
+// interface UserDetails {
+//   name: string;
+//   email: string;
+//   // [key: string]: any;
+// }
 
 const Navbar = () => {
   const { userId } = useAuthContext();
   const router = useRouter();
-  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+  // const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const { logout } = useAuthContext();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  // const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Fetch User Details
   useEffect(() => {
@@ -37,32 +37,33 @@ const Navbar = () => {
         });
         if (res.ok) {
           const data = await res.json();
-          setUserDetails(data);
+          console.log(data);
+          // setUserDetails(data);
         } else {
           console.error("Failed to fetch user details");
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     fetchUserDetails();
   }, [userId]);
 
   // Close dropdown on outside click
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+  //       setDropdownOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
 
   // Logout Handler
   const handleLogout = async () => {
@@ -93,6 +94,10 @@ const Navbar = () => {
         <Link href="/" className="text-lg font-bold hover:text-gray-400">
           O1B
         </Link>
+
+        {loading &&(
+           <div>Loading....... </div>
+        )}
 
         {/* Navigation Links */}
         <ul className="flex space-x-10 items-center">

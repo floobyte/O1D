@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 interface UpdateUserProps {
   id: string | null;
   onClose: () => void;
-  profileHeight?: number; // Accept profile height as a prop
+  profileHeight?: number;
 }
 
 const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
@@ -24,7 +24,6 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
     phone: "",
     username: "",
   });
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -41,19 +40,23 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
           setFormData({
             name: data.name || "",
             email: data.email || "",
-            password: "", // Don't show password for security
+            password: "",
             dob: data.dob || "",
             phone: data.phone || "",
             username: data.username || "",
           });
         } catch (err) {
-          setError("An error occurred while fetching user data.");
+          console.log("An error occurred while fetching user data.", err);
+          toast({
+            title: "Error",
+            description: "An error occurred while fetching user data.",
+          });
         }
       };
-
+  
       fetchUserData();
     }
-  }, [id]);
+  }, [id, toast]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,12 +65,14 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!id) {
-      setError("Invalid user ID");
+      toast({
+        title: "Error",
+        description: "Invalid user ID",
+      });
       return;
     }
 
     setLoading(true);
-    setError(null);
 
     try {
       const res = await fetch(`/api/users/${id}`, {
@@ -80,7 +85,10 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
 
       if (!res.ok) {
         const errorData = await res.json();
-        setError(errorData.error || "Failed to update user");
+        toast({
+          title: "Error",
+          description: errorData.error || "Failed to update user",
+        });
         return;
       }
 
@@ -100,7 +108,11 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
 
       onClose();
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      console.log("An error occurred. Please try again.", err);
+      toast({
+        title: "Error",
+        description: "An error occurred. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
@@ -110,12 +122,12 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
     <section
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
       style={{
-        height: profileHeight || "auto", // Use profile height or fallback to auto
+        height: profileHeight || "auto",
       }}
     >
       <div
         className="relative w-full max-w-md p-4 sm:p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800 m-4"
-        style={{ height: profileHeight || "auto" }} // Set the same height for the popup
+        style={{ height: profileHeight || "auto" }}
       >
         <div className="flex items-center justify-between mb-4 border-b pb-2">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
@@ -199,13 +211,6 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
             {loading ? "Updating..." : "Update User"}
           </Button>
         </form>
-        {/* <Button
-          variant="ghost"
-          className="w-full mt-4 text-red-500"
-          onClick={onClose}
-        >
-          Cancel
-        </Button> */}
       </div>
     </section>
   );

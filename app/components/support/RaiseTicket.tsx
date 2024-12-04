@@ -40,8 +40,9 @@ const RaiseTicket = () => {
       setMessage(data.message);
       setSubjectLine("");
       setCategory("");
-    } catch (err: any) {
-      setError(err.message || "An error occurred while creating the ticket.");
+    } catch (err) {
+      console.log("An error occurred while creating the ticket.", err);
+      setError("An error occurred while creating the ticket.");
     }
   };
 

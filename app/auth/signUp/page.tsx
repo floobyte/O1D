@@ -12,7 +12,7 @@ interface SignUpProps {
   onUserAdded: () => void;
 }
 
-const SignUp: React.FC<SignUpProps> = ({ onUserAdded }) => {
+const SignUp: React.FC<SignUpProps> = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -63,6 +63,7 @@ const SignUp: React.FC<SignUpProps> = ({ onUserAdded }) => {
       }, 3000);
 
     } catch (err) {
+      console.log("Failed to create user",err);
       setError("Failed to create user");
     }
   };

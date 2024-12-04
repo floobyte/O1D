@@ -160,4 +160,4 @@ const Dashboard = () => {
   );
 }
 
-export default authRouter(Dashboard, ['admin']);
+export default authRouter(Dashboard, ['admin','user']);

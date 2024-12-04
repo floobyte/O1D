@@ -41,14 +41,14 @@ const NotificationsPage = () => {
 
   return (
     <div>
-      {/* <h1>Notifications</h1>
+      <h1>Notifications</h1>
       <ul>
         {notifications.map((notification) => (
           <li key={notification._id}>
             {notification.message} <small>({new Date(notification.createdAt).toLocaleString()})</small>
           </li>
         ))}
-      </ul> */}
+      </ul>
     </div>
   );
 };
