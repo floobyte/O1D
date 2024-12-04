@@ -35,8 +35,8 @@ export default function WalletHistoryPage() {
         }
         const data = await response.json();
         setWalletHistory(data.walletHistory || []);
-      } catch (error: any) {
-        setError(error.message || "An error occurred");
+      } catch (error) {
+        setError("An error occurred");
       } finally {
         setLoading(false);
       }

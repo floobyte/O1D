@@ -66,8 +66,8 @@ export default function WalletPage() {
         // }
         const data = await response.json();
         setWallet(data.wallet);
-      } catch (err: any) {
-        setError(err.message || "An error occurred while fetching wallet data.");
+      } catch (error) {
+        setError( "An error occurred while fetching wallet data.");
       } finally {
         setLoading(false);
       }
