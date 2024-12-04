@@ -29,7 +29,7 @@ export function authRouter<T extends object>(Component: React.ComponentType<T>, 
             if(!allowedRole.includes(role as 'admin' | 'user')){
                 router.replace('auth/unautherized');
             }
-        },[allowedRole,router])
+        },[router])
 
         return <Component {...props} />
     };
