@@ -135,7 +135,7 @@ export default function WalletHistoryPage() {
 
               {/* Amount */}
               <div className="flex-shrink-0 text-right">
-                <div className="font-semibold text-xl text-gray-800">
+                <div className="font-semibold text-xl text-green-500">
                   {history.transactionType === "Refund" ? "-" : "+"}₹{history.amount.toFixed(2)}
                 </div>
                 <div

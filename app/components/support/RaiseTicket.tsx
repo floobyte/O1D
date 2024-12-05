@@ -1,6 +1,6 @@
-// components/CreateSupportTicket.tsx
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const RaiseTicket = () => {
   const [subjectLine, setSubjectLine] = useState("");
@@ -9,6 +9,8 @@ const RaiseTicket = () => {
   const [userId, setUserId] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isFormVisible, setIsFormVisible] = useState(true); // State to manage form visibility
+  const router = useRouter();
 
   useEffect(() => {
     // Fetch userId from sessionStorage
@@ -46,11 +48,29 @@ const RaiseTicket = () => {
     }
   };
 
+  const closeForm = () => {
+    setIsFormVisible(false); // Hide the form
+    router.push('/support');
+  };
+
+  if (!isFormVisible) {
+    return null; // Return nothing if the form is hidden
+  }
+
   return (
-    <div className="max-w-md  p-6 bg-white shadow-md rounded-lg text-gray-900 sm:mt-12 mt-40 m-4">
+    <div className="max-w-md p-6 bg-white shadow-md rounded-lg text-gray-900 sm:mt-12 mt-40 m-4 relative">
+      <button
+        onClick={closeForm}
+        className="absolute top-2 right-2 bg-slate-900 text-gray-100 rounded-full p-2 hover:bg-slate-950"
+        title="Close"
+      >
+        ✕
+      </button>
+
       <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">Raise Ticket</h2>
       {error && <div className="text-red-500 mb-3">{error}</div>}
       {message && <div className="text-green-500 mb-3">{message}</div>}
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
           <label htmlFor="subjectLine" className="block text-sm font-medium text-gray-700 mb-1">

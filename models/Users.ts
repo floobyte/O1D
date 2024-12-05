@@ -1,6 +1,6 @@
 // models/User.ts
 import { Schema, model, models } from 'mongoose';
-import { unique } from 'next/dist/build/utils';
+
 
 const UserSchema = new Schema({
   name: {
@@ -60,6 +60,12 @@ const UserSchema = new Schema({
   blocked: { 
     type: Boolean, 
     default: false 
+  },
+  resetToken: {
+    type: String,    
+  },
+  resetTokenExpiry: {
+   type: Date
   }
 });
 

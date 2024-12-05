@@ -101,11 +101,16 @@ const LoginPage = () => {
             {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
-        <div className="text-center mt-4">
+        <div className="text-center mt-4 flex">
           <p className="text-sm text-gray-600">
           Don&apos;t have an account?{" "}
             <Link href="/auth/signUp" className="text-blue-600 hover:text-blue-800">
-             Sign Up
+             Sign Up / 
+            </Link>
+          </p>
+          <p className="text-sm text-gray-600">
+            <Link href="/auth/forget-password" className="text-blue-400 hover:text-blue-600">
+              Forget Password
             </Link>
           </p>
         </div>

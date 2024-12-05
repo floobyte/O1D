@@ -1,9 +1,7 @@
-// components/ViewSupportTickets.tsx
-
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "@/app/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 interface Ticket {
     _id: string;
@@ -17,6 +15,7 @@ interface Ticket {
 const ViewTicket = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [error, setError] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
     const { userId, userRole } = useAuthContext();
     const router = useRouter();
 
@@ -49,8 +48,34 @@ const ViewTicket = () => {
         fetchTickets();
     }, [userId, userRole]);
 
-    const closeTicket = () => {
-        router.push(`/support/closeTicket`);
+    const handleCloseTicket = async (ticketId: string) => {
+        setMessage("");
+        setError("");
+
+        try {
+            const response = await fetch("/api/support/ticket/closeTicket", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ ticketId }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage(`Ticket ${ticketId} closed successfully.`);
+                setTickets((prevTickets) =>
+                    prevTickets.filter((ticket) => ticket.ticketId !== ticketId)
+                );
+                router.push('/support');
+            } else {
+                setError(data.error || `Failed to close ticket ${ticketId}.`);
+            }
+        } catch (err) {
+            setError(`An error occurred while closing ticket ${ticketId}.`);
+            console.error("Error:", err);
+        }
     };
 
     const handelReply = () => {
@@ -58,14 +83,18 @@ const ViewTicket = () => {
     }
 
     return (
-        <div className="p-6 max-w-5xl mx-auto bg-gray-500 rounded-lg shadow-lg mt-16 mb-12">
-            <h2 className="text-2xl font-semibold text-white mb-6 text-center">Support Tickets</h2>
+        <div className="p-6 max-w-5xl mx-auto bg-white rounded-lg shadow-lg mt-16 mb-12">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">Support Tickets</h2>
             {error && (
                 <div className="text-red-600 mb-4 p-2 bg-red-100 rounded-md text-sm">
                     {error}
                 </div>
             )}
-
+            {message && (
+                <div className="text-green-600 mb-4 p-2 bg-green-100 rounded-md text-sm">
+                    {message}
+                </div>
+            )}
             {tickets.length > 0 ? (
                 <div className="space-y-4">
                     {tickets.map((ticket) => (
@@ -97,15 +126,10 @@ const ViewTicket = () => {
                                     <strong>Created At:</strong> {new Date(ticket.createdAt).toLocaleString()}
                                 </p>
                             </div>
-
-
-                            <div className="flex gap-4 flex-row-reverse">
-
-                                {/*< Close Ticket -------------------------------->*/}
-
+                            <div className="flex  gap-2 flex-row-reverse justify-end">
                                 <div className="mt-4 ">
                                     <button
-                                        onClick={() => closeTicket()}
+                                        onClick={() => handleCloseTicket(ticket.ticketId)}
                                         className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-md hover:bg-red-700 transition duration-300"
                                     >
                                         Close
@@ -114,7 +138,7 @@ const ViewTicket = () => {
 
                                 {/*<------------------------ Reply to Ticket ---------------------------------->*/}
 
-                                <div className="mt-4 flex justify-end">
+                                <div className="mt-4 ">
                                     <button
                                         onClick={() => handelReply()}
                                         className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 transition duration-300"
@@ -123,7 +147,6 @@ const ViewTicket = () => {
                                     </button>
                                 </div>
                             </div>
-
                         </div>
                     ))}
                 </div>

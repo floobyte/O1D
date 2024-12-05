@@ -171,14 +171,14 @@ const UpdateUserPopUp: React.FC<UpdateUserProps> = ({
             onChange={handleChange}
             className="w-full"
           />
-          <Input
+          {/* <Input
             type="password"
             name="password"
             value={formData.password}
             placeholder="New Password"
             onChange={handleChange}
             className="w-full"
-          />
+          /> */}
           <Input
             type="text"
             name="dob"

@@ -10,7 +10,7 @@ const UsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  // const [isAddFormVisible, setIsAddFormVisible] = useState<boolean>(false);
+  const [isAddFormVisible, setIsAddFormVisible] = useState<boolean>(false);
 
   useEffect(() => {
     loadUsers();
@@ -29,9 +29,9 @@ const UsersPage = () => {
     }
   };
 
-  // const handleAddUserClick = () => {
-  //   setIsAddFormVisible(!isAddFormVisible);
-  // };
+  const handleAddUserClick = () => {
+    setIsAddFormVisible(!isAddFormVisible);
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -41,7 +41,7 @@ const UsersPage = () => {
       <UserList users={users} />
       {/* Toggle Add User Form */}
      
-      {<SignUp onUserAdded={loadUsers} />}
+      {isAddFormVisible && <SignUp onUserAdded={loadUsers} />}
     </div>
   );
 };
