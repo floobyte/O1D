@@ -39,10 +39,11 @@ export async function POST(req: NextRequest) {
         
         // Send email
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.hostinger.com',
+            port: 465,
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASSWORD
+                user: 'test@floobyte.com',
+                pass: 'arvindTest@123'
             },
             logger: true, // Enable logging
             debug: true,  // Include debug output
@@ -52,8 +53,8 @@ export async function POST(req: NextRequest) {
 
 
         await transporter.sendMail({
-            to: email,
-            from: process.env.SMTP_USER,
+            to: 'thakursingharvindji1999@gmail.com',
+            from: 'test@floobyte.com',
             subject: 'Password Reset',
             html: `
               <p>You requested a password reset.</p>

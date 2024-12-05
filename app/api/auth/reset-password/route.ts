@@ -12,8 +12,9 @@ export async function POST(req: NextRequest){
      
         const user = await User.findOne({
             resetToken: token,
-            resetTokenExpiry: { $gt: Date.now() },
+            // resetTokenExpiry: { $gt: Date.now() },
         });
+        console.log({user})
 
         if(!user){
             return NextResponse.json({ message: 'Invalid or expired token'},{ status: 404})
