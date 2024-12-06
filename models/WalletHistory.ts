@@ -4,7 +4,7 @@ const walletHistorySchema = new Schema({
     walletId: {
         type: Schema.Types.ObjectId,
         ref: 'Wallet',
-        // required: true
+        required: true
 
     },
     userId: {
