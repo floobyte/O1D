@@ -110,6 +110,13 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                 </span>
               )}
 
+              {user.role !== "admin" && (
+                <span className={`absolute top-4 right-4 px-1 py-0 text-xs font-bold text-white rounded-md
+                ${user.status === "Active" ? "bg-green-500" : "bg-red-500"}`}>
+                 <p className="text-sm">{user.status === "Active" ? "A" : "I"}</p>
+                </span>
+              )}
+
               <div className="flex justify-center mb-4">
                 <motion.img
                   src={`https://ui-avatars.com/api/?name=${user.name}&background=random`}
@@ -127,6 +134,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                 <p className="text-sm">Phone: {user.phone || "N/A"}</p>
                 <p className="text-sm">A/C: {user.account || "N/A"}</p>
                 <p className="text-sm">IFSC: {user.IFSC || "N/A"}</p>
+                {/* <p className="text-sm">{user.status || "N/A"}</p> */}
               </div>
 
               {userId === user._id && (

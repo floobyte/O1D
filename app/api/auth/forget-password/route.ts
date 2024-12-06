@@ -23,9 +23,9 @@ export async function POST(req: NextRequest) {
 
         // 2.Generate a Random Reset Token
         const token = crypto.randomBytes(32).toString('hex');
-        console.log({token});
+        console.log({ token });
         const expiry = Date.now() + 360000 //1hour;
-        console.log({expiry});
+        console.log({ expiry });
 
         //Update user with reset Token
         user.resetToken = token;
@@ -34,9 +34,6 @@ export async function POST(req: NextRequest) {
 
         user.save();
 
-        const resetUrl = `${process.env.URL_O1D}/api/auth/reset-password?token=${token}`;
-        console.log({resetUrl});
-        
         // Send email
         const transporter = nodemailer.createTransport({
             host: 'smtp.hostinger.com',
@@ -49,8 +46,9 @@ export async function POST(req: NextRequest) {
             debug: true,  // Include debug output
         })
 
-        console.log({transporter});
-
+        console.log({ transporter });
+        const resetUrl = `${process.env.URL_O1D}/auth/reset-password?token=${token}`;
+        console.log({ resetUrl });
 
         await transporter.sendMail({
             to: 'thakursingharvindji1999@gmail.com',

@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
     // Create a pending transaction in WalletHistory for admin approval
     const newWalletHistory = await WalletHistory.create({
-      walletId: wallet._id,
+      // walletId: wallet._id,
       userId: user._id,
       transactionType: 'withdrawal',
       amount,

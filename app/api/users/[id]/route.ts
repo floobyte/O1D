@@ -10,7 +10,7 @@ import bcrypt from 'bcrypt';
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   await connectDb();
   const user = await User.findById(params.id);
-  const id = params.id;
+  const id = params.id; 
   console.log({id});
   if (!user)
     return NextResponse.json(

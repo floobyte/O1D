@@ -79,14 +79,16 @@ export async function POST(req: NextRequest) {
     await wallet.save();
 
     const amount = product.rentAmount;
-
+   console.log({userId});
     // Add wallet history entry for deduction
     const newWalletHistory = await WalletHistory.create({
+      userId: userId,
       walletId: wallet._id,
       transactionType: 'debited',
       amount,
       balanceAfterTransaction: wallet.checkFund,
       transactionDate: new Date(),
+      approvalStatus:"Successful"
     });
     await newWalletHistory.save();
 

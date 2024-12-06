@@ -1,5 +1,6 @@
 // types/index.ts
 export interface User {
+    status: string;
     blocked: any;
     IFSC: string;
     account: string;

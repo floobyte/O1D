@@ -1,25 +1,94 @@
 // app/api/users/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/connectDb';
 import User from '@/models/Users';
 import Wallet from '@/models/Wallet';
 import bcrypt from 'bcrypt';
 // import { authMiddleware } from '@/middleware/authMiddleware';
+import RentalHistory from "@/models/RentalHistory";
+import WalletHistory from "@/models/WalletHistory";
+// import { authMiddleware } from "@/middleware/authMiddleware";
+
+export async function GET(req: NextRequest) {
+  // Check if the user is an admin
+  // const authResult = await authMiddleware(req, ["admin"]);
+  // if (authResult) {
+  //   return authResult; // Unauthorized response if not admin
+  // }
+
+  await dbConnect();
+
+  try {
+    // Fetch all users
+    const users = await User.find({});
+    const userStatuses = await Promise.all(
+      users.map(async (user) => {
+        const walletId = user.wallet;
+
+        // Check active rentals
+        const activeRental = await RentalHistory.findOne({
+          user: user._id,
+          rentDate: { $lte: new Date() },
+          $expr: {
+            $gt: [
+              { $add: ["$rentDate", { $multiply: ["$rentalPeriod", 24 * 60 * 60 * 1000] }] },
+              new Date(),
+            ],
+          },
+        });
+
+        // Check recent wallet transactions
+        const recentTransaction = await WalletHistory.findOne({
+          walletId: walletId,
+          transactionType: "credited_daily_earning",
+          transactionDate: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+        });
+
+        // Determine status
+        const status = activeRental || recentTransaction ? "Active" : "Inactive";
+
+        return {
+          _id: user._id,
+          name: user.name, // Assuming `name` is a field in the User model
+          email: user.email, // Assuming `email` is a field in the User model
+          username: user.username,
+          phone: user.phone,
+          role: user.role,
+          account: user.account,
+          IFSC: user.IFSC,
+          status,
+        };
+      })
+    );
+
+    // Respond with the list of users and their statuses
+    return NextResponse.json(userStatuses);
+  } catch (error) {
+    console.error("Error fetching user statuses:", error);
+    return NextResponse.json(
+      { status: "error", message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+
+
 
 // GET
-export async function GET() {
-  // const middlewareResponse = await authMiddleware(req, ['admin']);
+// export async function GET(req: NextRequest) {
+//   // const middlewareResponse = await authMiddleware(req, ['admin']);
 
-  // if(middlewareResponse){
-  //   return middlewareResponse;
-  // }
+//   // if(middlewareResponse){
+//   //   return middlewareResponse;
+//   // }
   
-  await dbConnect();
-  const users = await User.find({});
-  // const userRole = users.filter(user => user.role === 'user' );
-  return NextResponse.json(users);
+//   await dbConnect();
+//   const users = await User.find({});
+//   // const userRole = users.filter(user => user.role === 'user' );
+//   return NextResponse.json(users);
   
-}
+// }
 
 // POST
 export async function POST(req: Request) {
