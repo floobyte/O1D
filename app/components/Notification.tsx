@@ -3,8 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 import { useAuthContext } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 interface Notification {
+  dailyEarning: string;
+  rentalProduct: string;
+  approvewithDrawalReq: string;
+  withDrawalReq: string;
+  addFundReq: string;
+  approveFundReq: string;
   _id: string;
   userId: string;
   message: string;
@@ -16,6 +23,7 @@ const Notifications = () => {
   const { userId } = useAuthContext();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const router = useRouter();
 
   // Fetch Notifications
   useEffect(() => {
@@ -98,6 +106,16 @@ const Notifications = () => {
     setShowNotifications(!showNotifications);
   };
 
+
+  const goWalletHistory = () => {
+    router.push('/wallet/wallethistory');
+  }
+
+
+  const goOrders = () => {
+    router.push('/rentalhistory');
+  }
+
   return (
     <div className="relative">
       <button
@@ -122,7 +140,29 @@ const Notifications = () => {
                     className="flex justify-between items-center p-4 text-sm border-b"
                   >
                     <div>
-                      <p>{notification.message}</p>
+                      {
+                      notification.addFundReq === 'addFundReq' ||  
+                      notification.approveFundReq === "approveFundReq" ||
+                      notification.withDrawalReq === "withDrawalReq" ||
+                      notification.approvewithDrawalReq === "approvewithDrawalReq" ||
+                      notification.dailyEarning === "dailyEarning" ||
+                      notification.rentalProduct === "rentalProduct"
+                        ? (
+                          <button
+                            onClick={() => goWalletHistory()}
+                          >
+                            <p>{notification.message}</p>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => goOrders()}
+                          >
+                            <p>{notification.message}</p>
+                          </button>
+                        )}
+
+                      {/* <p>{notification.message}</p> */}
+
                       <span className="text-xs text-gray-500">
                         {new Date(notification.createdAt).toLocaleString()}
                       </span>

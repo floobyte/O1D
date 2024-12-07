@@ -172,7 +172,8 @@ export async function POST(req: Request) {
         userId: userId, // Use the 'userId' from the Notification
         transactionId: transactionId,
         message: `Your fund request of amount ${transaction.amount} Processing....`,
-        readStatus: false
+        readStatus: false,
+         approveFundReq:"approveFundReq"
       });
       await notificationProcess.save();
 
@@ -184,7 +185,8 @@ export async function POST(req: Request) {
             userId: userId, // Use the 'userId' from the Notification
             transactionId: transactionId,
             message: `Your fund request of amount ${transaction.amount} has been approved.`,
-            readStatus: false
+            readStatus: false,
+            approveFundReq:"approveFundReq"
           });
 
           await notificationApproved.save();
@@ -213,7 +215,8 @@ export async function POST(req: Request) {
         userId: userId, // Use the 'userId' from the Notification
         transactionId: transactionId,
         message: `Your fund request of amount ${transaction.amount} was rejected.`,
-        readStatus: false
+        readStatus: false,
+        approveFundReq:"approveRejected"
       });
       await notificationReject.save();
 

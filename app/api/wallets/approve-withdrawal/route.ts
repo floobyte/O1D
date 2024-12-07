@@ -74,6 +74,7 @@ export async function POST(req: Request) {
       amount,
       balanceAfterTransaction: wallet.checkFund, // Updated balance after withdrawal
       approvalStatus: 'Successful',
+      approvewithDrawalReq:"approvewithDrawalReq",
       transactionDate: new Date(),
     })
 

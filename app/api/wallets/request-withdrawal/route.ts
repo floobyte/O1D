@@ -42,13 +42,14 @@ export async function POST(req: Request) {
 
     // Create a pending transaction in WalletHistory for admin approval
     const newWalletHistory = await WalletHistory.create({
-      // walletId: wallet._id,
+      walletId: wallet._id,
       userId: user._id,
       transactionType: 'withdrawal',
       amount,
       balanceAfterTransaction: wallet.checkFund - amount, // Projected balance after approval
       transactionDate: new Date(),
       approvalStatus: 'pending', // Pending admin approval
+      
     });
 
     // Update wallet: move amount to pendingWithdrawal
@@ -57,14 +58,14 @@ export async function POST(req: Request) {
     await wallet.save();
 
     // Notify user of pending status
-    const userNotification = new Notification({
-      userId: user._id,
-      userRole: user.role,
-      transactionId: newWalletHistory._id,
-      message: `Your withdrawal request for ${amount} is pending admin approval.`,
-      readStatus: false,
-    });
-    await userNotification.save();
+    // const userNotification = new Notification({
+    //   userId: user._id,
+    //   userRole: user.role,
+    //   transactionId: newWalletHistory._id,
+    //   message: `Your withdrawal request for ${amount} is pending admin approval.`,
+    //   readStatus: false,
+    // });
+    // await userNotification.save();
 
     // Notify admin of the new withdrawal request
     const adminNotification = new Notification({
@@ -73,6 +74,7 @@ export async function POST(req: Request) {
       transactionId: newWalletHistory._id,
       message: `User ${username} has requested a withdrawal of ${amount}.`,
       readStatus: false,
+      withDrawalReq:"withDrawalReq"
     });
     await adminNotification.save();
 

@@ -59,11 +59,29 @@ export async function POST(req: Request) {
     // Notify the user of successful withdrawal
     const notification = new Notification({
       userId: transaction.userId,
+      walletId: wallet._id,
       transactionId: transaction._id,
       message: `Your withdrawal request for ${transaction.amount} has been approved.`,
       readStatus: false,
+      approvewithDrawalReq:"approvewithDrawalReq",
+      approvalStatus:'Successful'
     });
     await notification.save();
+
+    let amount = transaction.amount;
+    const newWalletHistory = await WalletHistory.create({
+      walletId: wallet._id,
+      userId: transaction.userId,
+      transactionType: 'withdraw',
+      amount,
+      message: `Your withdrawal request for ${transaction.amount} has been approved.`,
+      balanceAfterTransaction: wallet.checkFund, // Updated balance after withdrawal
+      approvalStatus: 'Successful',
+      approvewithDrawalReq:"approvewithDrawalReq",
+      transactionDate: new Date(),
+    })
+
+    await newWalletHistory.save();
 
     return NextResponse.json({ message: 'Withdrawal approved', wallet }, { status: 200 });
   } catch (error) {

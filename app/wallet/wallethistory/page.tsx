@@ -17,7 +17,8 @@ export default function WalletHistoryPage() {
   const [walletHistory, setWalletHistory] = useState<WalletHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId } = useAuthContext();
+  const { userId,walletId } = useAuthContext();
+
 
   // Check if userId is available before trying to fetch
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function WalletHistoryPage() {
 
     const fetchWalletHistory = async () => {
       try {
-        const response = await fetch(`/api/wallets/wallethistory/${userId}`);
+        const response = await fetch(`/api/wallets/wallethistory/${walletId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch wallet history");
         }
@@ -44,7 +45,7 @@ export default function WalletHistoryPage() {
     };
 
     fetchWalletHistory();
-  }, [userId]); // Depend on userId to re-fetch when it changes
+  }, [walletId]); // Depend on userId to re-fetch when it changes
   if (loading) {
     return (
       <div className="p-4 text-center">

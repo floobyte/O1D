@@ -121,6 +121,7 @@ export async function POST(req: NextRequest) {
 
     const rentalNotification = new Notification({
       userId: userId,
+      walletId: wallet._id,
       message: `You have successfully rented the product: ${product.productName}.`,
       readStatus: false,
     });
@@ -167,6 +168,7 @@ async function updateAllActiveRentals() {
           amount: rental.dailyEarning,
           balanceAfterTransaction: wallet.checkFund,
           transactionDate: new Date(),
+          approvalStatus: 'Successful'
         });
         await newEarningHistory.save();
 

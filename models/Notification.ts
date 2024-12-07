@@ -34,6 +34,30 @@ const NotificationSchema: Schema = new Schema({
     default: Date.now
 
   },
+  addFundReq: {
+    type: String,
+
+  },
+  approveFundReq: {
+    type: String,
+
+  },
+  withDrawalReq: {
+    type: String,
+
+  },
+  approvewithDrawalReq: {
+    type: String,
+
+  },
+  dailyEarning: {
+    type: String
+
+  },
+  rentalProduct: {
+    type: String,
+  },
+ 
 });
 
 const Notification = models.Notification || model('Notification', NotificationSchema);
