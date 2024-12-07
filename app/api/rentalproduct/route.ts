@@ -177,7 +177,7 @@ async function updateAllActiveRentals() {
           wallet._id,
           'credited_daily_earning',
           rental.dailyEarning,
-          rental.userId
+          rental.userId,
         );
       }
     } else {

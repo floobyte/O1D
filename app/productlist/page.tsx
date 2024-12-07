@@ -64,7 +64,7 @@ export default function RentalsPage() {
                 setShowPopup(true);
                 // alert("Product rented successfully!");
             } else {
-                setMessagePopUp("Failed to rent product! ");
+                setMessagePopUp("Insufficient Balance please Check Your Balanc!");
                 setShowPopup(true);
                 // alert("Failed to rent product!");
             }
