@@ -71,6 +71,7 @@ export async function POST(req: Request) {
     const adminNotification = new Notification({
       userId: user, // Use a predefined admin identifier or leave null for general admin notifications
       userRole: user.role,
+      username: user.username,
       transactionId: newWalletHistory._id,
       message: `User ${username} has requested a withdrawal of ${amount}.`,
       readStatus: false,

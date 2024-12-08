@@ -11,6 +11,10 @@ const NotificationSchema: Schema = new Schema({
     ref: 'User'
     // required: true
   },
+  username:{
+    type: String,
+     ref: 'User'
+  },
   transactionId: {
     type: Schema.Types.ObjectId,
     ref: 'WalletHistory'

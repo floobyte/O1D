@@ -143,6 +143,7 @@ const Notifications = () => {
                       {
                       notification.addFundReq === 'addFundReq' ||  
                       notification.approveFundReq === "approveFundReq" ||
+                      notification.approveFundReq === "approveRejected" ||
                       notification.withDrawalReq === "withDrawalReq" ||
                       notification.approvewithDrawalReq === "approvewithDrawalReq" ||
                       notification.dailyEarning === "dailyEarning" ||

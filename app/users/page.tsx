@@ -5,6 +5,7 @@ import { User } from "@/types";
 import { fetchUsers } from "@/app/services/api";
 import UserList from "@/app/components/UserList";
 import SignUp from "@/app/auth/signUp/page";
+import UserListWithSearch from "../components/UserListWithSearch";
 
 const UsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -38,7 +39,8 @@ const UsersPage = () => {
 
   return (
     <div>
-      <UserList users={users} />
+      {/* <UserList users={users} /> */}
+      <UserListWithSearch users={users} />
       {/* Toggle Add User Form */}
      
       {isAddFormVisible && <SignUp onUserAdded={loadUsers} />}

@@ -17,7 +17,7 @@ export default function WalletHistoryPage() {
   const [walletHistory, setWalletHistory] = useState<WalletHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId,walletId } = useAuthContext();
+  const { userId, walletId } = useAuthContext();
 
 
   // Check if userId is available before trying to fetch
@@ -37,7 +37,7 @@ export default function WalletHistoryPage() {
         const data = await response.json();
         setWalletHistory(data.walletHistory || []);
       } catch (error) {
-        console.log("An error occurred",error);
+        console.log("An error occurred", error);
         setError("An error occurred");
       } finally {
         setLoading(false);
@@ -125,9 +125,8 @@ export default function WalletHistoryPage() {
               {/* Transaction Details */}
               <div className="ml-4 flex-grow">
                 <div
-                  className={`font-semibold text-xl text-gray-800 ${
-                    history.transactionType === "Credit" ? "font-sans" : "font-serif"
-                  }`}
+                  className={`font-semibold text-xl text-gray-800 ${history.transactionType === "Credit" ? "font-sans" : "font-serif"
+                    }`}
                 >
                   {history.transactionType}
                 </div>
@@ -136,19 +135,27 @@ export default function WalletHistoryPage() {
 
               {/* Amount */}
               <div className="flex-shrink-0 text-right">
-                <div className="font-semibold text-xl text-green-500">
-                  {history.transactionType === "Refund" ? "-" : "+"}₹{history.amount.toFixed(2)}
+                <div className=
+                  {
+                    `${history.approvalStatus === "rejected"
+                        ? "text-red-500"
+                        : history.approvalStatus === "pending"
+                        ? "text-yellow-500"
+                        : "text-green-500"
+                    }`
+                  }
+                >
+                  ₹{history.amount.toFixed(2)}
                 </div>
                 <div
-                  className={`text-xs mt-1 ${
-                    history.approvalStatus === "approved" || history.approvalStatus === "Successful"
-                      ? "text-green-500"
-                      : history.approvalStatus === "pending"
+                  className={`text-xs mt-1 ${history.approvalStatus === "approved" || history.approvalStatus === "Successful"
+                    ? "text-green-500"
+                    : history.approvalStatus === "pending"
                       ? "text-yellow-500"
                       : history.approvalStatus === "rejected"
-                      ? "text-red-500"
-                      : "text-gray-500"
-                  }`}
+                        ? "text-red-500"
+                        : "text-gray-500"
+                    }`}
                 >
                   {history.approvalStatus}
                 </div>
@@ -158,7 +165,8 @@ export default function WalletHistoryPage() {
         </div>
       ) : (
         <p className="text-center text-gray-500">No wallet history found for this user.</p>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }

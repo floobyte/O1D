@@ -19,10 +19,22 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    // Fetch all users
+    // Parse search query from the request
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search")?.toLowerCase() || "";
+
+    // Fetch  users and Filter by the search query
     const users = await User.find({});
+    const filteredUsers = users.filter(
+      (user) => 
+        user.name?.toLowerCase().includes(search) ||
+        user.email?.toLowerCase().includes(search) ||
+        user.username?.toLowerCase().includes(search)
+    )
+
+
     const userStatuses = await Promise.all(
-      users.map(async (user) => {
+      filteredUsers.map(async (user) => {
         const walletId = user.wallet;
 
         // Check active rentals
@@ -74,26 +86,43 @@ export async function GET(req: NextRequest) {
 
 
 
-
-// GET
 // export async function GET(req: NextRequest) {
-//   // const middlewareResponse = await authMiddleware(req, ['admin']);
-
-//   // if(middlewareResponse){
-//   //   return middlewareResponse;
-//   // }
-  
+//   // Ensure database connection
 //   await dbConnect();
-//   const users = await User.find({});
-//   // const userRole = users.filter(user => user.role === 'user' );
-//   return NextResponse.json(users);
-  
+
+//   try {
+//     // Parse search query from the request
+//     const { searchParams } = new URL(req.url);
+//     const search = searchParams.get("search")?.toLowerCase() || "";
+
+//     // Fetch users and filter by the search query
+//     const users = await User.find({});
+//     const filteredUsers = users.filter(
+//       (user) =>
+//         user.name?.toLowerCase().includes(search) ||
+//         user.email?.toLowerCase().includes(search) ||
+//         user.username?.toLowerCase().includes(search)
+//     );
+
+//     // Respond with the filtered list of users
+//     return NextResponse.json(filteredUsers);
+//   } catch (error) {
+//     console.error("Error fetching users:", error);
+//     return NextResponse.json(
+//       { status: "error", message: "Internal server error" },
+//       { status: 500 }
+//     );
+//   }
 // }
+
+
+
+
 
 // POST
 export async function POST(req: Request) {
   await dbConnect();
-  
+
   try {
     const {
       name,
@@ -109,12 +138,12 @@ export async function POST(req: Request) {
     } = await req.json();
 
     if (
-      !name 
-      || !email 
-      || !dob 
-      || !password 
-      || !confirmPass 
-      || !phone 
+      !name
+      || !email
+      || !dob
+      || !password
+      || !confirmPass
+      || !phone
       || !username
       || !account
       || !IFSC
@@ -126,7 +155,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Passwords do not match' }, { status: 400 });
     }
 
-    const existingUser = await User.findOne({ $or: [{ email }, { username },{ phone }] });
+    const existingUser = await User.findOne({ $or: [{ email }, { username }, { phone }] });
     if (existingUser) {
       return NextResponse.json(
         { error: 'User with this email, username, phone already exists' },

@@ -48,8 +48,9 @@ export async function POST(req: Request) {
     const walletNotification = new Notification({
       userId: user,
       userRole: user.role,
+      username: user.username,
       transactionId: newWalletHistory._id,
-      message: `Fund request of amount ${amount} is pending admin approval.`,
+      message: `Fund request of ${user.username} amount ${amount} is pending admin approval.`,
       readStatus: false,
       addFundReq:"addFundReq" 
     });

@@ -200,6 +200,7 @@ export async function POST(req: Request) {
     } else if (action === 'reject') {
       // Reject the transaction
       transaction.approvalStatus = 'rejected';
+      transaction.transactionType = 'Cancelled';
       await transaction.save();
       console.log("Hello");
 

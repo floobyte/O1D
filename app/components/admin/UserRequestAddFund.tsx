@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 interface Notification {
@@ -15,31 +15,42 @@ const UserRequestAddFund: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [copiedTransactionId, setCopiedTransactionId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Debounced search
+  const debouncedSearch = useCallback(() => {
+    fetchUsersNotifications(searchQuery);
+  }, [searchQuery]);
 
   useEffect(() => {
-    const fetchUsersNotifications = async () => {
-      try {
-        const res = await fetch("/api/admin/notificationbyadmin", {
-          method: "GET",
-          credentials: "include",
-        });
+    const timer = setTimeout(() => {
+      debouncedSearch();
+    }, 500);
 
-        if (res.ok) {
-          const data = await res.json();
-          setUserNotifications(data.userNotifications || []);
-        } else {
-          setError("Failed to fetch notifications");
-        }
-      } catch (error) {
-        console.error("Error fetching notifications", error);
-        setError("An error occurred while fetching notifications.");
-      } finally {
-        setLoading(false);
+    return () => clearTimeout(timer);
+  }, [searchQuery, debouncedSearch]);
+
+  const fetchUsersNotifications = async (search = "") => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/notificationbyadmin?search=${search}`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setUserNotifications(data.userNotifications || []);
+      } else {
+        setError("Failed to fetch notifications");
       }
-    };
-
-    fetchUsersNotifications();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching notifications", error);
+      setError("An error occurred while fetching notifications.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCopyTransactionId = (transactionId: string) => {
     navigator.clipboard.writeText(transactionId).then(() => {
@@ -84,8 +95,15 @@ const UserRequestAddFund: React.FC = () => {
   };
 
   return (
-    <div className="h-1/2 flex items-center justify-center py-4 mt-4 sm:m-4 ">
-      <div className="w-full max-w-4xl  rounded-lg shadow-md">
+    <div className="h-1/2 flex items-center justify-center py-4 mt-4 sm:m-4 text-gray-700">
+      <div className="w-full max-w-4xl rounded-lg shadow-md">
+        <input
+          type="text"
+          className="w-full p-2 mb-4 border rounded"
+          placeholder="Search by username..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         {loading && <p className="text-gray-600">Loading notifications...</p>}
         {error && <p className="text-red-600">{error}</p>}
 
