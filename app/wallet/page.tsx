@@ -34,6 +34,13 @@ type Wallet = {
   pendingWithdrawal: number;
 };
 
+type UniversalWalletData = {
+  name: string;
+  value: number;
+};
+
+
+
 export default function WalletPage() {
   const [isModalOpen, setIsModalOpen] = useState<ModalType>(null);
   const [wallet, setWallet] = useState<Wallet | null>(null);
@@ -205,7 +212,7 @@ export default function WalletPage() {
             >
               ×
             </button>
-            <UniversalWallet wallet={wallet} />
+            {/* <UniversalWallet wallet={wallet} /> */}
           </div>
         </div>
       )}
