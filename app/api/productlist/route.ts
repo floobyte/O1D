@@ -1,16 +1,27 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import dbConnect from "@/lib/connectDb";
 import Product from "@/models/ProductList";
 // import User from "@/models/Users";
 // import { authMiddleware } from "@/middleware/authMiddleware";
 // Get Rentals
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
+
+  const { searchParams } = new URL(req.url); 
+  const search = searchParams.get("search")?.toLowerCase() || "";
+
     const products = await Product.find({});
-    return NextResponse.json({ products }, { status: 200 });
+
+    // Filter Products and search query
+
+    const filterProducts = products.filter((product) => {
+           product.productName?.toLowerCase().includes(search) || search === "";
+    })
+
+    return NextResponse.json({ filterProducts }, { status: 200 });
 
   } catch (error) {
     console.error("Error fetching rentals: ", error);

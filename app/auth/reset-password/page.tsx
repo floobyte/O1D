@@ -12,7 +12,7 @@ const ResetPassword = () => {
     useEffect(() => {
         const fetchToken = async () => {
             try {
-                const response = await fetch(`/api/auth/reset-password?userId=${userId}`);
+                const response = await fetch(`/auth/reset-password?userId=${userId}`);
                 const data = await response.json();
                 setResetToken(data.resetToken);
             } catch (error) {
@@ -26,7 +26,7 @@ const ResetPassword = () => {
     // Step 2: Use the reset token to reset the password
     const handleSubmit = async () => {
         try {
-            const response = await fetch('/api/auth/reset-password', {
+            const response = await fetch('/auth/reset-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token: resetToken, newPassword }),

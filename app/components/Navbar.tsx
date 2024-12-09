@@ -95,9 +95,9 @@ const Navbar = () => {
           O1B
         </Link>
 
-        {loading &&(
-           <div>Loading....... </div>
-        )}
+        {/* {loading &&(
+          //  <div>Loading....... </div>
+        )} */}
 
         {/* Navigation Links */}
         <ul className="flex space-x-10 items-center">
