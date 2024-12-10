@@ -24,7 +24,7 @@ type ModalType =
   | "requestWithdrawal"
   | "approveWithdrawal"
   | "checkFund"
-  | "UniversalWallet"
+  | "universalWallet"
   | null;
 
 type Wallet = {
@@ -44,6 +44,7 @@ type UniversalWalletData = {
 export default function WalletPage() {
   const [isModalOpen, setIsModalOpen] = useState<ModalType>(null);
   const [wallet, setWallet] = useState<Wallet | null>(null);
+  const [universalWallet, setUniversalWallet] = useState<UniversalWalletData [] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { walletId, userRole } = useAuthContext();
@@ -55,7 +56,7 @@ export default function WalletPage() {
     { label: "Approve Withdrawal", icon: <FaSearchDollar size={40} />, modal: "approveWithdrawal", roles: ["admin"] },
     { label: "Check Balance", icon: <FaCheckCircle size={40} />, modal: "checkFund", roles: ["user", "admin"] },
     { label: "Wallet History", icon: <FaHistory size={40} />, href: "/wallet/wallethistory", roles: ["user", "admin"] },
-    { label: "Total Ammount", icon: <FaHistory size={40} />, href: "/wallet/universalwallet", roles: ["admin"] },
+    { label: "Total Ammount", icon: <FaHistory size={40} />,modal: "universalWallet", roles: ["admin"] },
   ];
 
   const role = userRole ?? "guest";
@@ -83,6 +84,29 @@ export default function WalletPage() {
 
     fetchWallet();
   }, [walletId]);
+
+
+  // UniversalWallet
+
+  useEffect(() => {
+    const fetchUniversalWallet = async () => {
+      try {
+        const response = await fetch(`/api/wallets/universalwallet`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch wallet data");
+        }
+        const data = await response.json();
+        setUniversalWallet(data.universalWallet); // Set the universal wallet data
+      } catch (err) {
+        console.error("An error occurred while fetching wallet data.", err);
+        setError("An error occurred while fetching wallet data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUniversalWallet();
+  }, []);
 
   return (
     <div className="relative container mx-auto p-4 mt-6 text-center">
@@ -203,7 +227,7 @@ export default function WalletPage() {
 
       {/*<-----------------------------  UniversalWallet ------------------------------->*/}
 
-      {isModalOpen === "UniversalWallet" && wallet && (
+      {isModalOpen === "universalWallet" && universalWallet && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="p-4 sm:p-6 md:p-8 rounded-md w-[80%] sm:w-[50%] md:w-[39vw] lg:w-[39vw] relative">
             <button
@@ -212,7 +236,7 @@ export default function WalletPage() {
             >
               ×
             </button>
-            {/* <UniversalWallet wallet={wallet} /> */}
+            <UniversalWallet universalWallet={universalWallet || []} />
           </div>
         </div>
       )}
