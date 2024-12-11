@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UserList from "./UserList";
 import { User } from "@/types";
+import { useAuthContext } from "../context/AuthContext";
 
 interface UserListWithSearchProps {
   users: User[];
@@ -8,6 +9,7 @@ interface UserListWithSearchProps {
 
 const UserListWithSearch: React.FC<UserListWithSearchProps> = ({ users }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { userRole } = useAuthContext();
 
   // Filter users based on the search term
   const filteredUsers = users.filter((user) =>
@@ -18,7 +20,7 @@ const UserListWithSearch: React.FC<UserListWithSearchProps> = ({ users }) => {
 
   return (
     <div className="container  mx-auto p-6 mt-12 text-gray-700">
-      <div className="flex justify-center mb-6 ">
+      {userRole === "admin" && (<div className="flex justify-center mb-6 ">
         <input
           type="text"
           placeholder="Search users by name, username, or email"
@@ -26,7 +28,7 @@ const UserListWithSearch: React.FC<UserListWithSearchProps> = ({ users }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-      </div>
+      </div>)}
 
       <UserList users={filteredUsers} />
     </div>

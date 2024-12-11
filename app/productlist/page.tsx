@@ -81,7 +81,7 @@ export default function RentalsPage() {
 
             {/*<------------------------ Add Product Form ------------------->*/}
 
-            <div className="flex justify-between items-center mb-6 fixed bottom-0 right-2 z-10">
+            <div className="flex justify-between items-center mb-20 sm:mb-6 fixed bottom-0 right-2 z-10">
                 {(userRole === "admin") && (<button
                     className="bg-white hover:bg-gray-300 text-black px-4 py-2 rounded-lg transition-all duration-300"
                     onClick={handleFormToggle}

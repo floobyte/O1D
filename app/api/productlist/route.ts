@@ -5,6 +5,7 @@ import Product from "@/models/ProductList";
 // import { authMiddleware } from "@/middleware/authMiddleware";
 // Get Rentals
 
+
 export async function GET(req: NextRequest) {
   await dbConnect();
 
@@ -21,7 +22,7 @@ export async function GET(req: NextRequest) {
            product.productName?.toLowerCase().includes(search) || search === "";
     })
 
-    return NextResponse.json({ filterProducts }, { status: 200 });
+    return NextResponse.json({ products }, { status: 200 });
 
   } catch (error) {
     console.error("Error fetching rentals: ", error);
